@@ -1,15 +1,19 @@
 {
   "files": {
-    "main.css": "/Proyecto-Ing.-en-sistemas/static/css/main.02455218.css",
-    "main.js": "/Proyecto-Ing.-en-sistemas/static/js/main.2dcc25d4.js",
-    "static/js/453.3cfe23dd.chunk.js": "/Proyecto-Ing.-en-sistemas/static/js/453.3cfe23dd.chunk.js",
+    "main.css": "/Proyecto-Ing.-en-sistemas/static/css/main.ad90fa21.css",
+    "main.js": "/Proyecto-Ing.-en-sistemas/static/js/main.e7c725cc.js",
+    "static/js/977.2af4497c.chunk.js": "/Proyecto-Ing.-en-sistemas/static/js/977.2af4497c.chunk.js",
+    "static/js/455.12e90bce.chunk.js": "/Proyecto-Ing.-en-sistemas/static/js/455.12e90bce.chunk.js",
+    "static/js/453.09cab15b.chunk.js": "/Proyecto-Ing.-en-sistemas/static/js/453.09cab15b.chunk.js",
     "index.html": "/Proyecto-Ing.-en-sistemas/index.html",
-    "main.02455218.css.map": "/Proyecto-Ing.-en-sistemas/static/css/main.02455218.css.map",
-    "main.2dcc25d4.js.map": "/Proyecto-Ing.-en-sistemas/static/js/main.2dcc25d4.js.map",
-    "453.3cfe23dd.chunk.js.map": "/Proyecto-Ing.-en-sistemas/static/js/453.3cfe23dd.chunk.js.map"
+    "main.ad90fa21.css.map": "/Proyecto-Ing.-en-sistemas/static/css/main.ad90fa21.css.map",
+    "main.e7c725cc.js.map": "/Proyecto-Ing.-en-sistemas/static/js/main.e7c725cc.js.map",
+    "977.2af4497c.chunk.js.map": "/Proyecto-Ing.-en-sistemas/static/js/977.2af4497c.chunk.js.map",
+    "455.12e90bce.chunk.js.map": "/Proyecto-Ing.-en-sistemas/static/js/455.12e90bce.chunk.js.map",
+    "453.09cab15b.chunk.js.map": "/Proyecto-Ing.-en-sistemas/static/js/453.09cab15b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.02455218.css",
-    "static/js/main.2dcc25d4.js"
+    "static/css/main.ad90fa21.css",
+    "static/js/main.e7c725cc.js"
   ]
 }
