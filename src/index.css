@@ -42,7 +42,23 @@ code {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out;
+}
 /* Animations */
 @keyframes fadeIn {
   from {

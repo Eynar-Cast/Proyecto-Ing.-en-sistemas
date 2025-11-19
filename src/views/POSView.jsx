@@ -3,6 +3,7 @@ import { ShoppingCart, Trash2, Plus, Minus, Search, DollarSign, Receipt, X } fro
 import { useApp } from '../context/AppContext';
 import { formatPrice } from '../utils/helpers';
 import Button from '../components/Common/Button';
+import { generateSimpleInvoicePDF } from '../utils/pdfGenerator';
 
 const POSView = () => {
   const { products, registerEmployeeSale, currentUser } = useApp();
@@ -329,12 +330,12 @@ const POSView = () => {
 
             <div className="flex gap-3">
               <Button
-                onClick={printReceipt}
+                onClick={() => generateSimpleInvoicePDF(lastSale, { fullName: lastSale.clientName })}
                 variant="secondary"
                 fullWidth
                 icon={Receipt}
               >
-                Imprimir
+                Descargar PDF
               </Button>
               <Button
                 onClick={() => setShowReceipt(false)}

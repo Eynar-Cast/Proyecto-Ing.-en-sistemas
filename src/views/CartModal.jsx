@@ -1,26 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ShoppingCart, Trash2, X } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useCart } from '../hooks/useCart';
 import { formatPrice } from '../utils/helpers';
 import Button from '../components/Common/Button';
+import { generateSimpleInvoicePDF } from '../utils/pdfGenerator';
 
 const CartModal = ({ isOpen, onClose }) => {
-  const { completePurchase } = useApp();
+  const { completePurchase, currentUser } = useApp();
   const { cart, cartTotal, cartItemsCount, removeFromCart, updateCartQuantity } = useCart();
+  const [lastSale, setLastSale] = useState(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleCompletePurchase = async () => {
-    if (window.confirm('¿Confirmar la compra?')) {
-      const result = await completePurchase();
-      
-      if (result.success) {
-        alert('¡Compra realizada con éxito!');
-        onClose();
-      } else {
-        alert(result.error || 'Error al completar la compra');
-      }
+  if (window.confirm('¿Confirmar la compra?')) {
+    const result = await completePurchase();
+    
+    if (result.success) {
+      setLastSale(result.sale);
+      setShowSuccessModal(true);
+    } else {
+      alert(result.error || 'Error al completar la compra');
     }
-  };
+  }
+};
+
+const handleDownloadInvoice = () => {
+  if (lastSale && currentUser) {
+    generateSimpleInvoicePDF(lastSale, currentUser);
+  }
+};
+
+const handleCloseSuccess = () => {
+  setShowSuccessModal(false);
+  setLastSale(null);
+  onClose();
+};
+
 
   if (!isOpen) return null;
 
@@ -120,9 +136,48 @@ const CartModal = ({ isOpen, onClose }) => {
             disabled={cart.length === 0}
           >
             Completar Compra
-          </Button>
+                  </Button>
         </div>
       </div>
+
+      {/* Modal de éxito con opción de factura */}
+      {showSuccessModal && lastSale && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg max-w-md w-full p-6">
+            <div className="text-center mb-6">
+              <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
+                <svg className="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">¡Compra Exitosa!</h3>
+              <p className="text-gray-600">Tu pedido ha sido procesado correctamente</p>
+              <p className="text-3xl font-bold text-green-600 mt-4">
+                {formatPrice(lastSale.total)}
+              </p>
+              <p className="text-sm text-gray-500 mt-1">Orden #{lastSale.id}</p>
+            </div>
+
+            <div className="space-y-3">
+              <Button
+                onClick={handleDownloadInvoice}
+                variant="primary"
+                fullWidth
+                icon={ShoppingCart}
+              >
+                Descargar Factura PDF
+              </Button>
+              <Button
+                onClick={handleCloseSuccess}
+                variant="secondary"
+                fullWidth
+              >
+                Continuar Comprando
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

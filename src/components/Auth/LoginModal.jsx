@@ -7,7 +7,7 @@ import Button from '../Common/Button';
 
 const LoginModal = ({ isOpen, onClose, onSwitchToRegister }) => {
   const { login } = useApp();
-  const [loginMode, setLoginMode] = useState(USER_TYPES.CLIENT);
+  const loginMode = USER_TYPES.CLIENT;
   const [formData, setFormData] = useState({ username: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -45,29 +45,7 @@ const LoginModal = ({ isOpen, onClose, onSwitchToRegister }) => {
       title="Iniciar Sesión"
       size="small"
     >
-      {/* Selector de modo de login */}
-      <div className="flex gap-2 mb-6">
-        <button
-          onClick={() => setLoginMode(USER_TYPES.CLIENT)}
-          className={`flex-1 py-3 rounded-lg font-medium transition ${
-            loginMode === USER_TYPES.CLIENT
-              ? 'bg-indigo-600 text-white'
-              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }`}
-        >
-          Cliente
-        </button>
-        <button
-          onClick={() => setLoginMode(USER_TYPES.ADMIN)}
-          className={`flex-1 py-3 rounded-lg font-medium transition ${
-            loginMode === USER_TYPES.ADMIN
-              ? 'bg-indigo-600 text-white'
-              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-          }`}
-        >
-          Administrador
-        </button>
-      </div>
+      
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Usuario */}

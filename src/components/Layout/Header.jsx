@@ -5,7 +5,7 @@ import { useCart } from '../../hooks/useCart';
 import { USER_TYPES } from '../../constants';
 import Button from '../Common/Button';
 
-const Header = ({ onShowCart, onShowLogin }) => {
+  const Header = ({ onShowCart, onShowLogin, onShowAdminLogin }) => {
   const { isAuthenticated, currentUser, userType, logout } = useApp();
   const { cartItemsCount } = useCart();
 
@@ -61,14 +61,24 @@ const Header = ({ onShowCart, onShowLogin }) => {
                 </Button>
               </>
             ) : (
-              <Button
-                onClick={onShowLogin}
-                variant="secondary"
-                size="small"
-                icon={User}
-              >
-                Ingresar
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  onClick={onShowLogin}
+                  variant="secondary"
+                  size="small"
+                  icon={User}
+                >
+                  Cliente
+                </Button>
+                <Button
+                  onClick={onShowAdminLogin}
+                  variant="secondary"
+                  size="small"
+                  icon={User}
+                >
+                  Personal
+                </Button>
+              </div>
             )}
           </div>
         </div>

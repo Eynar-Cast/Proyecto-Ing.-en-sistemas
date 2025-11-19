@@ -1,23 +1,34 @@
 import React from 'react';
-import { Package, ShoppingCart, BarChart3, Users, Truck } from 'lucide-react';
+import { Package, ShoppingCart, BarChart3, Users, Truck, Monitor, UserCog } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { VIEWS, USER_TYPES } from '../../constants';
 
 const Navigation = () => {
   const { currentView, setCurrentView, userType } = useApp();
 
-  // Solo mostrar navegación para administradores
-  if (userType !== USER_TYPES.ADMIN) {
-    return null;
+  // Navegación según tipo de usuario
+  let navItems = [];
+
+  if (userType === USER_TYPES.ADMIN) {
+    navItems = [
+      { id: VIEWS.CATALOG, label: 'Catálogo', icon: ShoppingCart },
+      { id: VIEWS.INVENTORY, label: 'Inventario', icon: Package },
+      { id: VIEWS.SALES, label: 'Ventas', icon: BarChart3 },
+      { id: VIEWS.SUPPLIERS, label: 'Proveedores', icon: Truck },
+      { id: VIEWS.CLIENTS, label: 'Clientes', icon: Users },
+      { id: VIEWS.EMPLOYEES, label: 'Empleados', icon: UserCog }
+    ];
+  } else if (userType === USER_TYPES.EMPLOYEE) {
+    navItems = [
+      { id: VIEWS.POS, label: 'Punto de Venta', icon: Monitor },
+      { id: VIEWS.CATALOG, label: 'Productos', icon: Package }
+    ];
   }
 
-  const navItems = [
-    { id: VIEWS.CATALOG, label: 'Catálogo', icon: ShoppingCart },
-    { id: VIEWS.INVENTORY, label: 'Inventario', icon: Package },
-    { id: VIEWS.SALES, label: 'Ventas', icon: BarChart3 },
-    { id: VIEWS.SUPPLIERS, label: 'Proveedores', icon: Truck },
-    { id: VIEWS.CLIENTS, label: 'Clientes', icon: Users }
-  ];
+  // No mostrar navegación para clientes
+  if (userType === USER_TYPES.CLIENT || navItems.length === 0) {
+    return null;
+  }
 
   return (
     <div className="bg-white shadow-md border-b sticky top-[88px] z-30">

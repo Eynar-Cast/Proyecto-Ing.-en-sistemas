@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Edit2, UserCheck, UserX, Users, Mail, Phone, IdCard } from 'lucide-react';
+import { Plus, Edit2, UserCheck, UserX, Users, Mail, Phone, CreditCard } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { formatShortDate } from '../utils/helpers';
 import Button from '../components/Common/Button';
@@ -95,7 +95,7 @@ const EmployeesView = () => {
               <p className="text-gray-500 text-sm">Ventas Totales</p>
               <p className="text-3xl font-bold text-purple-600">{totalSales}</p>
             </div>
-            <IdCard className="w-10 h-10 text-purple-600" />
+            <CreditCard className="w-10 h-10 text-purple-600" />
           </div>
         </div>
       </div>

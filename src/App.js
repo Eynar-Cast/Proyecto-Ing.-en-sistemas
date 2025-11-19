@@ -12,6 +12,9 @@ import InventoryView from './views/InventoryView';
 import SalesView from './views/SalesView';
 import SuppliersView from './views/SuppliersView';
 import ClientsView from './views/ClientsView';
+import POSView from './views/POSView';
+import EmployeesView from './views/EmployeesView';
+import AdminLoginModal from './components/Auth/AdminLoginModal';
 import CartModal from './views/CartModal';
 
 function AppContent() {
@@ -19,6 +22,7 @@ function AppContent() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [showCart, setShowCart] = useState(false);
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
 
   const handleSwitchToRegister = () => {
     setShowLoginModal(false);
@@ -54,6 +58,10 @@ function AppContent() {
         return <SuppliersView />;
       case VIEWS.CLIENTS:
         return <ClientsView />;
+      case VIEWS.POS:
+        return <POSView />;
+      case VIEWS.EMPLOYEES:
+        return <EmployeesView />;
       default:
         return <CatalogView />;
     }
@@ -65,14 +73,17 @@ function AppContent() {
       <Header 
         onShowCart={() => setShowCart(true)} 
         onShowLogin={() => setShowLoginModal(true)}
+        onShowAdminLogin={() => setShowAdminLogin(true)}
       />
 
       {/* Navigation (solo para admin) */}
       {isAuthenticated && <Navigation />}
 
       {/* Contenido principal */}
-      <main className="max-w-7xl mx-auto px-4 py-6">
-        {renderView()}
+      <main className="w-full">
+        <div className={currentView === VIEWS.CATALOG ? '' : 'max-w-7xl mx-auto px-4 py-6'}>
+          {renderView()}
+        </div>
       </main>
 
       {/* Modales */}
@@ -91,6 +102,10 @@ function AppContent() {
       <CartModal
         isOpen={showCart}
         onClose={() => setShowCart(false)}
+      />
+      <AdminLoginModal
+        isOpen={showAdminLogin}
+        onClose={() => setShowAdminLogin(false)}
       />
     </div>
   );
