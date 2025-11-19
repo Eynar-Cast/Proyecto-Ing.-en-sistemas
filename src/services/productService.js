@@ -1,101 +1,74 @@
-import { storageService } from './storageService';
-import { STORAGE_KEYS } from '../constants';
+import { apiService } from './apiService';
 
 export const productService = {
   /**
    * Obtiene todos los productos
    */
   async getAll() {
-    return await storageService.get(STORAGE_KEYS.PRODUCTS) || [];
-  },
-
-  /**
-   * Guarda todos los productos
-   */
-  async saveAll(products) {
-    return await storageService.set(STORAGE_KEYS.PRODUCTS, products);
+    try {
+      return await apiService.get('/products');
+    } catch (error) {
+      console.error('Error al obtener productos:', error);
+      return [];
+    }
   },
 
   /**
    * Agrega un nuevo producto
    */
   async add(product) {
-    const products = await this.getAll();
-    const newProduct = {
-      ...product,
-      id: Date.now(),
-      createdAt: new Date().toISOString()
-    };
-    products.push(newProduct);
-    await this.saveAll(products);
-    return newProduct;
+    try {
+      return await apiService.post('/products', product);
+    } catch (error) {
+      throw new Error(error.message || 'Error al agregar producto');
+    }
   },
 
   /**
    * Actualiza un producto existente
    */
   async update(productId, updatedData) {
-    const products = await this.getAll();
-    const index = products.findIndex(p => p.id === productId);
-    
-    if (index === -1) {
-      throw new Error('Producto no encontrado');
+    try {
+      return await apiService.put(`/products/${productId}`, updatedData);
+    } catch (error) {
+      throw new Error(error.message || 'Error al actualizar producto');
     }
-
-    products[index] = {
-      ...products[index],
-      ...updatedData,
-      updatedAt: new Date().toISOString()
-    };
-
-    await this.saveAll(products);
-    return products[index];
   },
 
   /**
    * Elimina un producto
    */
   async delete(productId) {
-    const products = await this.getAll();
-    const filtered = products.filter(p => p.id !== productId);
-    await this.saveAll(filtered);
-    return true;
+    try {
+      await apiService.delete(`/products/${productId}`);
+      return true;
+    } catch (error) {
+      throw new Error(error.message || 'Error al eliminar producto');
+    }
   },
 
   /**
    * Busca un producto por ID
    */
   async findById(productId) {
-    const products = await this.getAll();
-    return products.find(p => p.id === productId);
+    try {
+      return await apiService.get(`/products/${productId}`);
+    } catch (error) {
+      throw new Error(error.message || 'Producto no encontrado');
+    }
   },
 
   /**
    * Actualiza el stock de un producto
    */
   async updateStock(productId, quantity, operation = 'set') {
-    const product = await this.findById(productId);
-    
-    if (!product) {
-      throw new Error('Producto no encontrado');
+    try {
+      return await apiService.put(`/products/${productId}/stock`, {
+        quantity,
+        operation
+      });
+    } catch (error) {
+      throw new Error(error.message || 'Error al actualizar stock');
     }
-
-    let newStock;
-    switch (operation) {
-      case 'add':
-        newStock = product.stock + quantity;
-        break;
-      case 'subtract':
-        newStock = product.stock - quantity;
-        break;
-      default:
-        newStock = quantity;
-    }
-
-    if (newStock < 0) {
-      throw new Error('Stock insuficiente');
-    }
-
-    return await this.update(productId, { stock: newStock });
   }
 };

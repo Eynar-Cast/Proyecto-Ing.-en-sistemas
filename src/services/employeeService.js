@@ -1,149 +1,118 @@
-import { storageService } from './storageService';
-import { STORAGE_KEYS } from '../constants';
+import { apiService } from './apiService';
 
 export const employeeService = {
   /**
    * Obtiene todos los empleados
    */
   async getAll() {
-    return await storageService.get(STORAGE_KEYS.EMPLOYEES) || [];
-  },
-
-  /**
-   * Guarda todos los empleados
-   */
-  async saveAll(employees) {
-    return await storageService.set(STORAGE_KEYS.EMPLOYEES, employees);
+    try {
+      return await apiService.get('/employees');
+    } catch (error) {
+      console.error('Error al obtener empleados:', error);
+      return [];
+    }
   },
 
   /**
    * Agrega un nuevo empleado
    */
   async add(employeeData) {
-    const employees = await this.getAll();
-    
-    // Validar si el usuario ya existe
-    if (employees.some(e => e.username === employeeData.username)) {
-      throw new Error('El nombre de usuario ya está en uso');
+    try {
+      return await apiService.post('/employees', employeeData);
+    } catch (error) {
+      throw new Error(error.message || 'Error al agregar empleado');
     }
-
-    if (employees.some(e => e.email === employeeData.email)) {
-      throw new Error('El correo electrónico ya está registrado');
-    }
-
-    const newEmployee = {
-      id: Date.now(),
-      ...employeeData,
-      createdAt: new Date().toISOString(),
-      isActive: true,
-      sales: []
-    };
-
-    employees.push(newEmployee);
-    await this.saveAll(employees);
-    
-    return newEmployee;
   },
 
   /**
    * Valida credenciales de empleado
    */
   async validateEmployee(username, password) {
-    const employees = await this.getAll();
-    return employees.find(e => 
-      e.username === username && 
-      e.password === password && 
-      e.isActive
-    );
+    try {
+      const response = await apiService.post('/auth/login/employee', {
+        username,
+        password
+      });
+      return response.employee;
+    } catch (error) {
+      return null;
+    }
   },
 
   /**
    * Actualiza un empleado
    */
   async update(employeeId, updatedData) {
-    const employees = await this.getAll();
-    const index = employees.findIndex(e => e.id === employeeId);
-    
-    if (index === -1) {
-      throw new Error('Empleado no encontrado');
+    try {
+      return await apiService.put(`/employees/${employeeId}`, updatedData);
+    } catch (error) {
+      throw new Error(error.message || 'Error al actualizar empleado');
     }
-
-    employees[index] = {
-      ...employees[index],
-      ...updatedData,
-      updatedAt: new Date().toISOString()
-    };
-
-    await this.saveAll(employees);
-    return employees[index];
   },
 
   /**
    * Desactiva un empleado
    */
   async deactivate(employeeId) {
-    return await this.update(employeeId, { isActive: false });
+    try {
+      return await apiService.put(`/employees/${employeeId}/deactivate`);
+    } catch (error) {
+      throw new Error(error.message || 'Error al desactivar empleado');
+    }
   },
 
   /**
    * Activa un empleado
    */
   async activate(employeeId) {
-    return await this.update(employeeId, { isActive: true });
+    try {
+      return await apiService.put(`/employees/${employeeId}/activate`);
+    } catch (error) {
+      throw new Error(error.message || 'Error al activar empleado');
+    }
   },
 
   /**
    * Busca un empleado por ID
    */
   async findById(employeeId) {
-    const employees = await this.getAll();
-    return employees.find(e => e.id === employeeId);
+    try {
+      return await apiService.get(`/employees/${employeeId}`);
+    } catch (error) {
+      throw new Error(error.message || 'Empleado no encontrado');
+    }
   },
 
   /**
    * Obtiene ventas de un empleado
    */
   async getEmployeeSales(employeeId, startDate = null, endDate = null) {
-    const employees = await this.getAll();
-    const employee = employees.find(e => e.id === employeeId);
-    
-    if (!employee) return [];
-
-    let sales = employee.sales || [];
-
-    if (startDate && endDate) {
-      const start = new Date(startDate);
-      const end = new Date(endDate);
-      sales = sales.filter(s => {
-        const saleDate = new Date(s.date);
-        return saleDate >= start && saleDate <= end;
-      });
+    try {
+      let url = `/employees/${employeeId}/sales`;
+      const params = new URLSearchParams();
+      
+      if (startDate) params.append('startDate', startDate);
+      if (endDate) params.append('endDate', endDate);
+      
+      if (params.toString()) {
+        url += `?${params.toString()}`;
+      }
+      
+      return await apiService.get(url);
+    } catch (error) {
+      console.error('Error al obtener ventas del empleado:', error);
+      return [];
     }
-
-    return sales;
   },
 
   /**
    * Registra una venta para un empleado
    */
   async registerSale(employeeId, saleData) {
-    const employees = await this.getAll();
-    const employee = employees.find(e => e.id === employeeId);
-    
-    if (!employee) {
-      throw new Error('Empleado no encontrado');
+    try {
+      return await apiService.post(`/employees/${employeeId}/sales`, saleData);
+    } catch (error) {
+      throw new Error(error.message || 'Error al registrar venta');
     }
-
-    const sale = {
-      ...saleData,
-      employeeId,
-      employeeName: employee.fullName,
-      registeredAt: new Date().toISOString()
-    };
-
-    employee.sales = [...(employee.sales || []), sale];
-    await this.saveAll(employees);
-    
-    return sale;
   }
 };

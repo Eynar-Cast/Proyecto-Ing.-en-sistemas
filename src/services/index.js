@@ -1,4 +1,4 @@
-export { storageService } from './storageService';
+export { apiService } from './apiService';
 export { productService } from './productService';
 export { authService } from './authService';
 export { salesService } from './salesService';

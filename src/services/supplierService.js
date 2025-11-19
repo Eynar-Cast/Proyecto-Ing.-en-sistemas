@@ -1,74 +1,60 @@
-import { storageService } from './storageService';
-import { STORAGE_KEYS } from '../constants';
+import { apiService } from './apiService';
 
 export const supplierService = {
   /**
    * Obtiene todos los proveedores
    */
   async getAll() {
-    return await storageService.get(STORAGE_KEYS.SUPPLIERS) || [];
-  },
-
-  /**
-   * Guarda todos los proveedores
-   */
-  async saveAll(suppliers) {
-    return await storageService.set(STORAGE_KEYS.SUPPLIERS, suppliers);
+    try {
+      return await apiService.get('/suppliers');
+    } catch (error) {
+      console.error('Error al obtener proveedores:', error);
+      return [];
+    }
   },
 
   /**
    * Agrega un nuevo proveedor
    */
   async add(supplierData) {
-    const suppliers = await this.getAll();
-    
-    const newSupplier = {
-      id: Date.now(),
-      ...supplierData,
-      createdAt: new Date().toISOString()
-    };
-
-    suppliers.push(newSupplier);
-    await this.saveAll(suppliers);
-    return newSupplier;
+    try {
+      return await apiService.post('/suppliers', supplierData);
+    } catch (error) {
+      throw new Error(error.message || 'Error al agregar proveedor');
+    }
   },
 
   /**
    * Actualiza un proveedor
    */
   async update(supplierId, updatedData) {
-    const suppliers = await this.getAll();
-    const index = suppliers.findIndex(s => s.id === supplierId);
-    
-    if (index === -1) {
-      throw new Error('Proveedor no encontrado');
+    try {
+      return await apiService.put(`/suppliers/${supplierId}`, updatedData);
+    } catch (error) {
+      throw new Error(error.message || 'Error al actualizar proveedor');
     }
-
-    suppliers[index] = {
-      ...suppliers[index],
-      ...updatedData,
-      updatedAt: new Date().toISOString()
-    };
-
-    await this.saveAll(suppliers);
-    return suppliers[index];
   },
 
   /**
    * Elimina un proveedor
    */
   async delete(supplierId) {
-    const suppliers = await this.getAll();
-    const filtered = suppliers.filter(s => s.id !== supplierId);
-    await this.saveAll(filtered);
-    return true;
+    try {
+      await apiService.delete(`/suppliers/${supplierId}`);
+      return true;
+    } catch (error) {
+      throw new Error(error.message || 'Error al eliminar proveedor');
+    }
   },
 
   /**
    * Busca un proveedor por ID
    */
   async findById(supplierId) {
-    const suppliers = await this.getAll();
-    return suppliers.find(s => s.id === supplierId);
+    try {
+      return await apiService.get(`/suppliers/${supplierId}`);
+    } catch (error) {
+      throw new Error(error.message || 'Proveedor no encontrado');
+    }
   }
 };
