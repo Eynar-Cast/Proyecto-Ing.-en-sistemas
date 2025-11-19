@@ -2,9 +2,6 @@ import React from 'react';
 import { useApp } from '../../context/AppContext';
 import { VIEWS, USER_TYPES } from '../../constants';
 import { Package, ShoppingCart, BarChart3, Users, Truck, Monitor, UserCog, ShoppingBag } from 'lucide-react';
-// Remove the duplicate line 5
-
-// ...
 
 const Navigation = () => {
   const { currentView, setCurrentView, userType } = useApp();

@@ -6,7 +6,8 @@ import {
   categoryService,
   supplierService,
   movementService,
-  employeeService
+  employeeService,
+  purchaseService
 } from '../services';
 import { VIEWS, USER_TYPES, DEFAULT_CATEGORIES } from '../constants';
 
@@ -493,6 +494,24 @@ export const AppProvider = ({ children }) => {
       return { success: false, error: error.message };
     }
   };
+  const registerPurchase = async (purchaseData) => {
+  try {
+    const newPurchase = await purchaseService.create(purchaseData);
+    setPurchases(prev => [...prev, newPurchase]);
+    
+    // Recargar productos actualizados
+    const updatedProducts = await productService.getAll();
+    setProducts(updatedProducts);
+    
+    // Recargar movimientos
+    const updatedMovements = await movementService.getAll();
+    setMovements(updatedMovements);
+    
+    return { success: true, purchase: newPurchase };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
 
   // ========== VALORES DEL CONTEXTO ==========
   const value = {
@@ -550,25 +569,6 @@ export const AppProvider = ({ children }) => {
     toggleEmployeeStatus,
     registerEmployeeSale
   };
-  // ========== COMPRAS ==========
-const registerPurchase = async (purchaseData) => {
-  try {
-    const newPurchase = await purchaseService.create(purchaseData);
-    setPurchases(prev => [...prev, newPurchase]);
-    
-    // Recargar productos actualizados
-    const updatedProducts = await productService.getAll();
-    setProducts(updatedProducts);
-    
-    // Recargar movimientos
-    const updatedMovements = await movementService.getAll();
-    setMovements(updatedMovements);
-    
-    return { success: true, purchase: newPurchase };
-  } catch (error) {
-    return { success: false, error: error.message };
-  }
-};
   return (
     <AppContext.Provider value={value}>
       {children}

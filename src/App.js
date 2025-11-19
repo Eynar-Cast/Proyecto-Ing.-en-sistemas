@@ -6,7 +6,7 @@ import LoginModal from './components/Auth/LoginModal';
 import RegisterModal from './components/Auth/RegisterModal';
 import { VIEWS } from './constants';
 
-// Importar vistas (las crearemos como componentes separados)
+// Importar vistas
 import CatalogView from './views/CatalogView';
 import InventoryView from './views/InventoryView';
 import SalesView from './views/SalesView';
@@ -53,6 +53,8 @@ function AppContent() {
         return <CatalogView />;
       case VIEWS.INVENTORY:
         return <InventoryView />;
+      case VIEWS.PURCHASES:
+        return <PurchasesView />;
       case VIEWS.SALES:
         return <SalesView />;
       case VIEWS.SUPPLIERS:
@@ -66,28 +68,6 @@ function AppContent() {
       default:
         return <CatalogView />;
     }
-    const renderView = () => {
-  switch (currentView) {
-    case VIEWS.CATALOG:
-      return <CatalogView />;
-    case VIEWS.INVENTORY:
-      return <InventoryView />;
-    case VIEWS.PURCHASES: // Nueva línea
-      return <PurchasesView />; // Nueva línea
-    case VIEWS.SALES:
-      return <SalesView />;
-    case VIEWS.SUPPLIERS:
-      return <SuppliersView />;
-    case VIEWS.CLIENTS:
-      return <ClientsView />;
-    case VIEWS.POS:
-      return <POSView />;
-    case VIEWS.EMPLOYEES:
-      return <EmployeesView />;
-    default:
-      return <CatalogView />;
-  }
-};
   };
 
   return (
@@ -126,6 +106,7 @@ function AppContent() {
         isOpen={showCart}
         onClose={() => setShowCart(false)}
       />
+      
       <AdminLoginModal
         isOpen={showAdminLogin}
         onClose={() => setShowAdminLogin(false)}
