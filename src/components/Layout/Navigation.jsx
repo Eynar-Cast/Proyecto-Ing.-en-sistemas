@@ -1,7 +1,10 @@
 import React from 'react';
-import { Package, ShoppingCart, BarChart3, Users, Truck, Monitor, UserCog } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { VIEWS, USER_TYPES } from '../../constants';
+import { Package, ShoppingCart, BarChart3, Users, Truck, Monitor, UserCog, ShoppingBag } from 'lucide-react';
+// Remove the duplicate line 5
+
+// ...
 
 const Navigation = () => {
   const { currentView, setCurrentView, userType } = useApp();
@@ -13,6 +16,7 @@ const Navigation = () => {
     navItems = [
       { id: VIEWS.CATALOG, label: 'Catálogo', icon: ShoppingCart },
       { id: VIEWS.INVENTORY, label: 'Inventario', icon: Package },
+      { id: VIEWS.PURCHASES, label: 'Compras', icon: ShoppingBag },
       { id: VIEWS.SALES, label: 'Ventas', icon: BarChart3 },
       { id: VIEWS.SUPPLIERS, label: 'Proveedores', icon: Truck },
       { id: VIEWS.CLIENTS, label: 'Clientes', icon: Users },

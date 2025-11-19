@@ -16,6 +16,7 @@ import POSView from './views/POSView';
 import EmployeesView from './views/EmployeesView';
 import AdminLoginModal from './components/Auth/AdminLoginModal';
 import CartModal from './views/CartModal';
+import PurchasesView from './views/PurchasesView';
 
 function AppContent() {
   const { currentView, isAuthenticated, loading } = useApp();
@@ -65,6 +66,28 @@ function AppContent() {
       default:
         return <CatalogView />;
     }
+    const renderView = () => {
+  switch (currentView) {
+    case VIEWS.CATALOG:
+      return <CatalogView />;
+    case VIEWS.INVENTORY:
+      return <InventoryView />;
+    case VIEWS.PURCHASES: // Nueva línea
+      return <PurchasesView />; // Nueva línea
+    case VIEWS.SALES:
+      return <SalesView />;
+    case VIEWS.SUPPLIERS:
+      return <SuppliersView />;
+    case VIEWS.CLIENTS:
+      return <ClientsView />;
+    case VIEWS.POS:
+      return <POSView />;
+    case VIEWS.EMPLOYEES:
+      return <EmployeesView />;
+    default:
+      return <CatalogView />;
+  }
+};
   };
 
   return (
