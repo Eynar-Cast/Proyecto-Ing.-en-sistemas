@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Proyecto-Ing.-en-sistemas/static/css/main.02455218.css",
+    "main.js": "/Proyecto-Ing.-en-sistemas/static/js/main.2dcc25d4.js",
+    "static/js/453.3cfe23dd.chunk.js": "/Proyecto-Ing.-en-sistemas/static/js/453.3cfe23dd.chunk.js",
+    "index.html": "/Proyecto-Ing.-en-sistemas/index.html",
+    "main.02455218.css.map": "/Proyecto-Ing.-en-sistemas/static/css/main.02455218.css.map",
+    "main.2dcc25d4.js.map": "/Proyecto-Ing.-en-sistemas/static/js/main.2dcc25d4.js.map",
+    "453.3cfe23dd.chunk.js.map": "/Proyecto-Ing.-en-sistemas/static/js/453.3cfe23dd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.02455218.css",
+    "static/js/main.2dcc25d4.js"
+  ]
+}
