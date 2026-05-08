@@ -286,12 +286,16 @@ npm install
 
 ## 📄 Licencia
 
-Este proyecto es de código abierto y está disponible para uso educativo.
+MIT License
+
+Copyright (c) 2026 Eynar-Cast
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software...
 
 ## 👨‍💻 Autor
 
-Proyecto refactorizado por Claude - Anthropic
-
+Eynar-Cast
 ---
 
 **Nota:** Este proyecto es una refactorización completa del código original "espagueti" en una arquitectura modular, limpia y escalable siguiendo las mejores prácticas de React y desarrollo de software.
