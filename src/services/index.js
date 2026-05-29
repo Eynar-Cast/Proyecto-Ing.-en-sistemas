@@ -6,4 +6,3 @@ export { categoryService } from './categoryService';
 export { supplierService } from './supplierService';
 export { movementService } from './movementService';
 export { employeeService } from './employeeService';
-export { purchaseService } from './purchaseService';

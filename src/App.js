@@ -6,7 +6,7 @@ import LoginModal from './components/Auth/LoginModal';
 import RegisterModal from './components/Auth/RegisterModal';
 import { VIEWS } from './constants';
 
-// Importar vistas
+// Importar vistas (las crearemos como componentes separados)
 import CatalogView from './views/CatalogView';
 import InventoryView from './views/InventoryView';
 import SalesView from './views/SalesView';
@@ -16,7 +16,6 @@ import POSView from './views/POSView';
 import EmployeesView from './views/EmployeesView';
 import AdminLoginModal from './components/Auth/AdminLoginModal';
 import CartModal from './views/CartModal';
-import PurchasesView from './views/PurchasesView';
 
 function AppContent() {
   const { currentView, isAuthenticated, loading } = useApp();
@@ -53,8 +52,6 @@ function AppContent() {
         return <CatalogView />;
       case VIEWS.INVENTORY:
         return <InventoryView />;
-      case VIEWS.PURCHASES:
-        return <PurchasesView />;
       case VIEWS.SALES:
         return <SalesView />;
       case VIEWS.SUPPLIERS:
@@ -106,7 +103,6 @@ function AppContent() {
         isOpen={showCart}
         onClose={() => setShowCart(false)}
       />
-      
       <AdminLoginModal
         isOpen={showAdminLogin}
         onClose={() => setShowAdminLogin(false)}

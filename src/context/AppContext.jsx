@@ -6,8 +6,7 @@ import {
   categoryService,
   supplierService,
   movementService,
-  employeeService,
-  purchaseService
+  employeeService
 } from '../services';
 import { VIEWS, USER_TYPES, DEFAULT_CATEGORIES } from '../constants';
 
@@ -36,7 +35,7 @@ export const AppProvider = ({ children }) => {
   const [clients, setClients] = useState([]);
   const [cart, setCart] = useState([]);
   const [employees, setEmployees] = useState([]);
-  const [purchases, setPurchases] = useState([]);
+
   // Estados de UI
   const [currentView, setCurrentView] = useState(VIEWS.CATALOG);
   const [loading, setLoading] = useState(true);
@@ -56,8 +55,7 @@ export const AppProvider = ({ children }) => {
         salesData,
         movementsData,
         clientsData,
-        employeesData,
-        purchasesData 
+        employeesData
       ] = await Promise.all([
         productService.getAll(),
         categoryService.getAll(),
@@ -65,8 +63,7 @@ export const AppProvider = ({ children }) => {
         salesService.getAll(),
         movementService.getAll(),
         authService.getClients(),
-        employeeService.getAll(),
-        purchaseService.getAll() 
+        employeeService.getAll()
       ]);
 
       setProducts(productsData);
@@ -76,7 +73,6 @@ export const AppProvider = ({ children }) => {
       setMovements(movementsData);
       setClients(clientsData);
       setEmployees(employeesData);
-      setPurchases(purchasesData);
     } catch (error) {
       console.error('Error al cargar datos:', error);
     } finally {
@@ -494,24 +490,6 @@ export const AppProvider = ({ children }) => {
       return { success: false, error: error.message };
     }
   };
-  const registerPurchase = async (purchaseData) => {
-  try {
-    const newPurchase = await purchaseService.create(purchaseData);
-    setPurchases(prev => [...prev, newPurchase]);
-    
-    // Recargar productos actualizados
-    const updatedProducts = await productService.getAll();
-    setProducts(updatedProducts);
-    
-    // Recargar movimientos
-    const updatedMovements = await movementService.getAll();
-    setMovements(updatedMovements);
-    
-    return { success: true, purchase: newPurchase };
-  } catch (error) {
-    return { success: false, error: error.message };
-  }
-};
 
   // ========== VALORES DEL CONTEXTO ==========
   const value = {
@@ -532,7 +510,6 @@ export const AppProvider = ({ children }) => {
     clients,
     cart,
     employees,
-    purchases, 
     
     // UI
     currentView,
@@ -561,14 +538,13 @@ export const AppProvider = ({ children }) => {
     
     // Acciones de ventas
     completePurchase,
-    // Acciones de compras
-    registerPurchase,  // ← AGREGAR ESTA LÍNEA
     // Acciones de empleados
     addEmployee,
     updateEmployee,
     toggleEmployeeStatus,
     registerEmployeeSale
   };
+
   return (
     <AppContext.Provider value={value}>
       {children}

@@ -57,7 +57,6 @@ export const STORAGE_KEYS = {
 // Vistas de la aplicación
 export const VIEWS = {
   POS: 'pos', // Punto de venta
-  PURCHASES: 'purchases',
   EMPLOYEES: 'employees',
   REPORTS: 'reports',
   CATALOG: 'catalog',
